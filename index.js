@@ -42,8 +42,10 @@ const responseHeadersToRemove = ["content-encoding"];
 
   
   app.use(async (ctx) => {
-    let base = "https://app.ahrefs.com";
-    let url = base + ctx.originalUrl;
+    // let base = "https://app.ahrefs.com";
+    // let url = base + ctx.originalUrl;
+    if (ctx.query.url) {
+        const url = ctx.url.replace("/?url=", "");
     const browser = await puppeteer.launch(options);
     let responseBody;
     let responseData;
@@ -68,7 +70,7 @@ const responseHeadersToRemove = ["content-encoding"];
     headersToRemove.forEach((header) => delete headers[header]);
     await page.setExtraHTTPHeaders({
       ...headers,
-      origin: base,
+    //   origin: base,
     });
   }
   await page.setUserAgent(
@@ -127,6 +129,11 @@ const responseHeadersToRemove = ["content-encoding"];
     );
     ctx.set("content-security-policy", "default-src * 'unsafe-inline' 'unsafe-eval' data: blob:;");
     ctx.body = responseData;
-  });
+    }else{
+        ctx.body = "Please specify the URL in the 'url' query string.";
+
+    }
+
+});
   app.listen(process.env.PORT || 3000);
 })();
