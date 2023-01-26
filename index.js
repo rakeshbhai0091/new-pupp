@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const puppeteer = require('puppeteer');
 
-app.route('/')
+app.route('*')
   .get(async (req, res) => {
     // Handle GET request
     const targetUrl = req.query.url;
@@ -11,11 +11,30 @@ app.route('/')
       args: ['--no-sandbox']
     });
     const page = await browser.newPage();
-    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36');
-  await page.setExtraHTTPHeaders({
-    'Accept-Language': 'en-US,en;q=0.9',
-    'Cookie': 'BSSESSID=1keqJL5850GTPoKFDKwsq6h%2BZrmigUibXunMao7W',
-  });
+    let cookies = [];
+  if (res.header.cookie) {
+    res.header.cookie.split("; ").forEach((cookie) => {
+      let temp = cookie.split("=");
+      cookies.push({
+        name: temp[0],
+        value: temp[1],
+        domain: ".ahrefs.com",
+      });
+    });
+    await page.setCookie(...cookies);
+  }
+  let headers;
+  if (res.headers) {
+    headers = res.headers;
+    headersToRemove.forEach((header) => delete headers[header]);
+    await page.setExtraHTTPHeaders({
+      ...headers,
+      origin: base,
+    });
+  }
+  await page.setUserAgent(
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
+  );
     await page.goto(targetUrl, { waitUntil: 'networkidle2' });
     const html = await page.content();
     res.send(html);
