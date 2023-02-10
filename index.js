@@ -26,29 +26,35 @@ const headersToRemove = [
 
 const responseHeadersToRemove = ["content-encoding"];
 // const responseHeadersToRemove = ["Accept-Ranges", "Content-Length", "Keep-Alive", "Connection", "content-encoding", "set-cookie"];
+const proxy = 'http://173.322.8.176:6288';
+const username = 'user';
+const password = 'pass';
 
 (async () => {
   let options = {
     headless: true,
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    args: ["--no-sandbox", "--disable-setuid-sandbox",`--proxy-server=${proxy}`],
   };
   if (process.env.PUPPETEER_SKIP_CHROMIUM_DOWNLOAD)
     options.executablePath = "/usr/bin/chromium-browser";
   if (process.env.PUPPETEER_HEADFUL) options.headless = false;
   if (process.env.PUPPETEER_USERDATADIR)
     options.userDataDir = process.env.PUPPETEER_USERDATADIR;
-  if (process.env.PUPPETEER_PROXY)
-    options.args.push(`--proxy-server=${process.env.PUPPETEER_PROXY}`);
+  // if (process.env.PUPPETEER_PROXY)
+  //   options.args.push(`--proxy-server=${process.env.PUPPETEER_PROXY}`);
 
   
   app.use(async (ctx) => {
-    let base = "https://app.ahrefs.com";
+    let base = "https://www.google.com";
     let url = base + ctx.originalUrl;
     const browser = await puppeteer.launch(options);
     let responseBody;
     let responseData;
     let responseHeaders = [];
     const page = await browser.newPage();
+
+    await page.authenticate({ username, password });
+
     // console.log(url);
     let cookies = [];
   if (ctx.header.cookie) {
