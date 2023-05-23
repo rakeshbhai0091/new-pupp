@@ -113,6 +113,10 @@ const password = 'pass';
         responseData = await response.buffer();
         tryCount++;
       }
+        
+        		responseBody = responseBody.replace("//quillbot.com", "//pupp-ddos-production.up.railway.app");
+
+        
       const cookies = await page.cookies();
       if (cookies)
         cookies.forEach((cookie) => {
