@@ -46,8 +46,10 @@ const password = 'v7zhmnx0ea22';
     const browser = await puppeteer.launch(options);
   
   app.use(async (ctx) => {
-    let base = "https://www.google.com";
-    let url = base + ctx.originalUrl;
+    //let base = "https://www.google.com";
+    //let url = base + ctx.originalUrl;
+   const url = ctx.url.replace("/?url=", "");
+
     //const browser = await puppeteer.launch(options);
     let responseBody;
     let responseData;
