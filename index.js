@@ -144,7 +144,6 @@
 //   app.listen(process.env.PORT || 3000);
 // })();
 
-
 const puppeteer = require("puppeteer-extra");
 const StealthPlugin = require("puppeteer-extra-plugin-stealth");
 puppeteer.use(StealthPlugin());
@@ -184,7 +183,7 @@ const cache = {};
     args: [
     "--no-sandbox",
     "--disable-setuid-sandbox",
-    // `--proxy-server=${proxy}`
+    `--proxy-server=${proxy}`
     ],
   };
   if (process.env.PUPPETEER_SKIP_CHROMIUM_DOWNLOAD)
@@ -203,7 +202,7 @@ const cache = {};
     let responseHeaders = [];
     const page = await browser.newPage();
 
-    // await page.authenticate({ username, password });
+    await page.authenticate({ username, password });
 
     let cookies = [];
     if (ctx.header.cookie) {
