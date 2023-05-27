@@ -43,11 +43,12 @@ const password = 'pass';
   // if (process.env.PUPPETEER_PROXY)
   //   options.args.push(`--proxy-server=${process.env.PUPPETEER_PROXY}`);
 
+    const browser = await puppeteer.launch(options);
   
   app.use(async (ctx) => {
     let base = "https://www.google.com";
     let url = base + ctx.originalUrl;
-    const browser = await puppeteer.launch(options);
+    //const browser = await puppeteer.launch(options);
     let responseBody;
     let responseData;
     let responseHeaders = [];
