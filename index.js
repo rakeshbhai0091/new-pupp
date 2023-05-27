@@ -26,9 +26,9 @@ const headersToRemove = [
 
 const responseHeadersToRemove = ["content-encoding"];
 // const responseHeadersToRemove = ["Accept-Ranges", "Content-Length", "Keep-Alive", "Connection", "content-encoding", "set-cookie"];
-const proxy = 'http://173.322.8.176:6288';
-const username = 'user';
-const password = 'pass';
+const proxy = 'http://84.21.189.127:5774';
+const username = 'aqbjjasr';
+const password = 'v7zhmnx0ea22';
 
 (async () => {
   let options = {
