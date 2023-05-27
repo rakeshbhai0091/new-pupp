@@ -77,7 +77,7 @@ const password = 'v7zhmnx0ea22';
     headersToRemove.forEach((header) => delete headers[header]);
     await page.setExtraHTTPHeaders({
       ...headers,
-      origin: base,
+      //origin: base,
     });
   }
   await page.setUserAgent(
